@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>JavaScript Functions</title>
+  <style>
+    :root {
+      --primary: #1e40af;
+      --accent: #22d3ee;
+      --bg: #f0f9ff;
+      --surface: #fff;
+      --text: #0f172a;
+      --muted: #64748b;
+      --radius: 12px;
+      --shadow: 0 4px 18px rgba(34, 211, 238, 0.09);
+    }
+    body {
+      font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 32px;
+      margin: 0;
+    }
+    h1 {
+      color: var(--primary);
+      text-align: center;
+      margin-bottom: 2.2rem;
+      letter-spacing: 2px;
+      font-size: 2.1em;
+      font-weight: 800;
+      text-shadow: 1px 2px 8px #bae6fd;
+    }
+    .section {
+      background: var(--surface);
+      margin-bottom: 32px;
+      padding: 20px 26px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border-left: 6px solid var(--accent);
+      transition: box-shadow 0.2s;
+      max-width: 480px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .section:hover {
+      box-shadow: 0 10px 36px rgba(34, 211, 238, 0.13);
+    }
+    h2 {
+      color: var(--primary);
+      margin-top: 0;
+      font-size: 1.13em;
+      font-weight: 700;
+    }
+    button {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      border-radius: var(--radius);
+      padding: 0.7rem 1.5rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-top: 10px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      box-shadow: 0 2px 8px rgba(34, 211, 238, 0.08);
+    }
+    button:hover {
+      background: var(--accent);
+      color: var(--primary);
+    }
+    input[type="number"] {
+      padding: 0.6rem;
+      border: 1.5px solid #bae6fd;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      background: #e0f2fe;
+      margin-right: 10px;
+      margin-top: 8px;
+      transition: border 0.2s;
+      color: var(--primary);
+    }
+    input[type="number"]:focus {
+      border: 2px solid var(--primary);
+      outline: none;
+    }
+    .output {
+      margin-top: 14px;
+      padding: 12px 16px;
+      background: #e0f2fe;
+      border-radius: var(--radius);
+      color: var(--primary);
+      font-weight: 600;
+      border-left: 5px solid var(--accent);
+      box-shadow: 0 1px 4px rgba(34, 211, 238, 0.06);
+      min-height: 26px;
+      word-break: break-all;
+      font-size: 1.08em;
+    }
+    .output .label {
+      color: var(--muted);
+      font-weight: 400;
+      margin-right: 8px;
+    }
+    @media (max-width: 650px) {
+      body {
+        padding: 10px;
+      }
+      .section {
+        padding: 12px 4px;
+        max-width: 98vw;
+      }
+      h1 {
+        font-size: 1.2em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>JavaScript Function Demos</h1>
+
+  <!-- 1. Filter Negative Numbers -->
+  <div class="section">
+    <h2>1. Filter Positive Numbers Only</h2>
+    <p>Input Array: <span style="color:var(--accent);font-weight:600;">[2, -5, 7, -3, 0, 8]</span></p>
+    <button onclick="showFiltered()">Show Positives</button>
+    <div id="result1" class="output"></div>
+  </div>
+
+  <!-- 2. Difference from 13 -->
+  <div class="section">
+    <h2>2. Difference from 13 (Triple if Greater)</h2>
+    <input type="number" id="numInput" placeholder="Enter a number">
+    <button onclick="diffFrom13()">Calculate Difference</button>
+    <div id="result2" class="output"></div>
+  </div>
+
+  <!-- 3. Fibonacci Series -->
+  <div class="section">
+    <h2>3. Fibonacci Series (with Sum)</h2>
+    <input type="number" id="fibInput" placeholder="Enter count (e.g. 10)">
+    <button onclick="showFibonacci()">Show Fibonacci</button>
+    <div id="result3" class="output"></div>
+  </div>
+
+  <!-- 4. Sum of Multiples of 3 and 5 -->
+  <div class="section">
+    <h2>4. Multiples of 3 & 5 under 100 (Sum)</h2>
+    <button onclick="sumMultiples()">Show Multiples & Sum</button>
+    <div id="result4" class="output"></div>
+  </div>
+
+  <!-- 5. Cube using Function Object -->
+  <div class="section">
+    <h2>5. Cube of a Number (Arrow Function)</h2>
+    <input type="number" id="cubeInput" placeholder="Enter number">
+    <button onclick="showCube()">Show Cube</button>
+    <div id="result5" class="output"></div>
+  </div>
+
+  <!-- JavaScript Code -->
+  <script>
+    // 1. Filter positive numbers
+    function showFiltered() {
+      const arr = [2, -5, 7, -3, 0, 8];
+      const filtered = arr.filter(num => num > 0);
+      document.getElementById("result1").innerHTML =
+        `<span class="label">Positives:</span> <span style="color:var(--accent);">${filtered.join(", ")}</span>`;
+    }
+
+    // 2. Difference from 13 (triple if greater)
+    function diffFrom13() {
+      const num = parseInt(document.getElementById("numInput").value);
+      let result;
+      if (isNaN(num)) {
+        document.getElementById("result2").innerHTML = "<span style='color:red;'>Please enter a valid number.</span>";
+        return;
+      }
+      if (num > 13) {
+        result = 3 * Math.abs(num - 13);
+        document.getElementById("result2").innerHTML =
+          `<span class="label">Triple Difference:</span> <span style="color:var(--accent);">${result}</span>`;
+      } else {
+        result = 13 - num;
+        document.getElementById("result2").innerHTML =
+          `<span class="label">Difference:</span> <span style="color:var(--accent);">${result}</span>`;
+      }
+    }
+
+    // 3. Fibonacci series with sum
+    function showFibonacci() {
+      const n = parseInt(document.getElementById("fibInput").value);
+      if (isNaN(n) || n <= 0) {
+        document.getElementById("result3").innerHTML = "<span style='color:red;'>Enter a positive number.</span>";
+        return;
+      }
+      const fib = [0, 1];
+      for (let i = 2; i < n; i++) {
+        fib[i] = fib[i - 1] + fib[i - 2];
+      }
+      const result = fib.slice(0, n).join(" → ");
+      const sum = fib.slice(0, n).reduce((a, b) => a + b, 0);
+      document.getElementById("result3").innerHTML =
+        `<span class="label">Fibonacci:</span> <span style="color:var(--accent);">${result}</span><br>
+         <span class="label">Sum:</span> <span style="color:var(--accent);">${sum}</span>`;
+    }
+
+    // 4. Sum of multiples of 3 and 5 under 100
+    function sumMultiples() {
+      let sum = 0;
+      let multiples = [];
+      for (let i = 0; i < 100; i++) {
+        if (i % 3 === 0 || i % 5 === 0) {
+          sum += i;
+          multiples.push(i);
+        }
+      }
+      document.getElementById("result4").innerHTML =
+        `<span class="label">Multiples:</span> <span style="color:var(--accent);">${multiples.join(", ")}</span><br>
+         <span class="label">Sum:</span> <span style="color:var(--accent);">${sum}</span>`;
+    }
+
+    // 5. Cube using Arrow Function
+    function showCube() {
+      const num = parseInt(document.getElementById("cubeInput").value);
+      if (isNaN(num)) {
+        document.getElementById("result5").innerHTML = "<span style='color:red;'>Please enter a valid number.</span>";
+        return;
+      }
+      const cube = n => n ** 3;
+      document.getElementById("result5").innerHTML =
+        `<span class="label">Cube:</span> <span style="color:var(--accent);">${cube(num)}</span>`;
+    }
+  </script>
+
+</body>
+</html>
